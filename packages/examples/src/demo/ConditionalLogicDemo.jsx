@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Query, Builder, Utils } from '@react-awesome-query-builder/ui';
 import loadedConfigMaterial from './config/index.tsx'; // Material UI config
-import '@react-awesome-query-builder/material/css/styles.css'; // Import Material styles
 
 // Initialize Material UI config
 const config = loadedConfigMaterial('material');
