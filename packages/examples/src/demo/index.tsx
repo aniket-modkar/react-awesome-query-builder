@@ -17,6 +17,7 @@ import type { DemoQueryBuilderState, DemoQueryBuilderMemo } from "./types";
 import { emptyTree } from "./init_data";
 import { defaultInitFile, initialSkin, validationTranslateOptions, defaultRenderBlocks } from "./options";
 import type { LazyStyleModule } from "../skins";
+import ConditionalLogicDemo from "./ConditionalLogicDemo"; // Import the new demo
 import "./i18n";
 
 // @ts-ignore
@@ -33,11 +34,12 @@ dispatchHmrUpdate(loadedConfig, initTree);
 //
 // Demo component
 //
-const DemoQueryBuilder: React.FC = () => {
+const App: React.FC = () => { // Renamed DemoQueryBuilder to App to avoid confusion
   const memo: React.MutableRefObject<DemoQueryBuilderMemo> = useRef({});
+  const [currentDemo, setCurrentDemo] = useState<"standard" | "conditional">("standard");
 
   const [state, setState] = useState<DemoQueryBuilderState>({
-    tree: initTree,
+    tree: initTree, // Default tree for standard demo
     initErrors: initErrors,
     config: loadedConfig,
     skin: initialSkin,
@@ -59,7 +61,9 @@ const DemoQueryBuilder: React.FC = () => {
 
   // Trick for HMR
   useHmrUpdate(useCallback(({config}) => {
-    setState(state => ({ ...state, config }));
+    // When HMR updates config, re-apply it to the state
+    // This might need to be smarter if ConditionalLogicDemo also uses a mutable config
+    setState(s => ({ ...s, config }));
   }, []));
 
   const { renderRunActions } = useActions(state, setState, memo);
@@ -114,7 +118,7 @@ const DemoQueryBuilder: React.FC = () => {
     });
   };
 
-  const builder = state.renderBocks.queryBuilder && (
+  const builder = state.renderBocks.queryBuilder && currentDemo === "standard" && (
     <Query
       {...state.config}
       value={state.tree}
@@ -124,8 +128,26 @@ const DemoQueryBuilder: React.FC = () => {
     />
   );
 
+  const renderDemoSwitcher = () => (
+    <div style={{ padding: "10px", borderBottom: "1px solid #ccc", marginBottom: "10px" }}>
+      <strong>Select Demo: </strong>
+      <button onClick={() => setCurrentDemo("standard")} disabled={currentDemo === "standard"} style={{marginRight: '10px'}}>
+        Standard Demo
+      </button>
+      <button onClick={() => setCurrentDemo("conditional")} disabled={currentDemo === "conditional"}>
+        Conditional Logic Demo
+      </button>
+    </div>
+  );
+
+  if (currentDemo === "conditional") {
+    return <ConditionalLogicDemo />;
+  }
+
+  // Render standard demo
   return (
     <div>
+      {renderDemoSwitcher()}
       <div>
         Theme: &nbsp;
         {renderSkinSelector()}
@@ -179,4 +201,4 @@ const DemoQueryBuilder: React.FC = () => {
 };
 
 
-export default DemoQueryBuilder;
+export default App;

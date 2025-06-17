@@ -381,6 +381,10 @@ export default (skin: string) => {
   //////////////////////////////////////////////////////////////////////
 
   const fields: Fields = {
+    amount: { label: "Amount", type: "number" },
+    duration: { label: "Duration", type: "number" },
+    status: { label: "Status", type: "select", fieldSettings: { listValues: ["approved", "pending", "rejected"] } },
+    // Original fields below
     user: {
       label: "User",
       tooltip: "Group of fields",

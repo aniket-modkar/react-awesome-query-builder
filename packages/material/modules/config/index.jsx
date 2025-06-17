@@ -24,6 +24,24 @@ const settings = {
   renderProvider: (props, {RCE, W: {MaterialProvider}}) => RCE(MaterialProvider, props),
   renderConfirm: (props, {W: {MaterialConfirm}}) => MaterialConfirm(props),
   useConfirm: ({W: {MaterialUseConfirm}}) => MaterialUseConfirm(),
+  renderGroup: (props, {RCE, W}) => {
+    const { type, properties } = props;
+    // W should contain MaterialIfCondition, MaterialElseCondition, and BasicConfig's Group
+    const { MaterialIfCondition, MaterialElseCondition, Group: DefaultGroup } = W;
+
+    if (type === "if_group") {
+      // Determine if it's 'IF' or 'ELSE IF' based on a property, e.g., 'ifType' or 'isElseIf'
+      // For MaterialIfCondition, we designed a 'type' prop: "IF" or "ELSE IF"
+      const ifBlockType = properties?.get("isElseIf") ? "ELSE IF" : "IF";
+      return RCE(MaterialIfCondition, { ...props, type: ifBlockType });
+    } else if (type === "else_group") {
+      return RCE(MaterialElseCondition, props);
+    } else {
+      // Fallback to default group rendering for standard groups
+      // Material design should apply via MaterialProvider
+      return RCE(DefaultGroup, props);
+    }
+  },
 };
 
 

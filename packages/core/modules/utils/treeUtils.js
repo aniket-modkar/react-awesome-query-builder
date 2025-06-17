@@ -225,22 +225,24 @@ export const getFlatTree = (tree, config) => {
     const isRule = type === "rule";
     const isGroup = type === "group";
     const isCaseGroup = type === "case_group";
+    const isIfGroup = type === "if_group";
     // tip: count rule_group as 1 atomic rule
     const isAtomicRule = !insideRuleGroup && (!children || isRuleGroup);
     const hasChildren = childrenIds?.length > 0;
     const parentId = path.length ? path[path.length-1] : null;
     const closestRuleGroupId = [...path].reverse().find(id => items[id].type == "rule_group");
     const field = item.getIn(["properties", "field"]);
+    const action = item.getIn(["properties", "action"]);
     const fieldConfig = field && config && getFieldConfig(config, field);
     const canRegroup = fieldConfig ? fieldConfig?.canRegroup !== false : undefined;
     const maxNesting = fieldConfig?.maxNesting;
     const closestRuleGroupCanRegroup = items?.[closestRuleGroupId]?.canRegroup;
     const closestRuleGroupMaxNesting = items?.[closestRuleGroupId]?.maxNesting;
     const closestRuleGroupLev = items?.[closestRuleGroupId]?.lev;
-    const currentCaseId = isCaseGroup ? id : caseId;
+    const currentCaseId = isCaseGroup || isIfGroup ? id : caseId;
 
     // Calculations before
-    if (isCaseGroup) {
+    if (isCaseGroup || isIfGroup) {
       cases.push(id);
       // reset counters
       globalLeafCount = 0;
@@ -256,7 +258,7 @@ export const getFlatTree = (tree, config) => {
     if (!isRoot) {
       position = {};
       position.caseNo = caseNo;
-      position.globalNoByType = isCaseGroup ? caseNo : globalCountByType[type] || 0;
+      position.globalNoByType = isCaseGroup || isIfGroup ? caseNo : globalCountByType[type] || 0;
       position.indexPath = [ ...path.slice(1).map(id => items[id].childNo), childNo ];
       if (isRule) {
         position.globalLeafNo = globalLeafCount;
@@ -275,6 +277,7 @@ export const getFlatTree = (tree, config) => {
       parent: parentId,
       children: childrenIds,
       childNo,
+      action: action,
       caseId: currentCaseId,
       caseNo,
       closestRuleGroupId,
@@ -293,8 +296,8 @@ export const getFlatTree = (tree, config) => {
       // vertical
       top: (insideCollapsed ? null : top),
       // for case
-      isDefaultCase: isCaseGroup ? !children : undefined,
-      atomicRulesCountInCase: isCaseGroup ? 0 : undefined,
+      isDefaultCase: isCaseGroup || isIfGroup ? !children : undefined,
+      atomicRulesCountInCase: isCaseGroup || isIfGroup ? 0 : undefined,
       // object with numbers indicating # of item in tree
       position,
       // unused
@@ -323,7 +326,7 @@ export const getFlatTree = (tree, config) => {
         // tip: don't count children of rule_group
         depth += 1;
       }
-      if (!isRoot && !isCaseGroup) {
+      if (!isRoot && !isCaseGroup && !isIfGroup) {
         isGroup && globalGroupCount++;
         isAtomicRule && globalAtomicCount++;
         isRule && globalLeafCount++;

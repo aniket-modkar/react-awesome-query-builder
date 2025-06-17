@@ -29,6 +29,9 @@ import MaterialSwitch from "./core/MaterialSwitch";
 import MaterialValueSources from "./core/MaterialValueSources";
 import MaterialConfirm from "./core/MaterialConfirm";
 import { MaterialProvider } from "./core/MaterialProvider";
+import MaterialActionBlock from "./core/MaterialActionBlock";
+import MaterialIfCondition from "./core/MaterialIfCondition";
+import MaterialElseCondition from "./core/MaterialElseCondition";
 
 
 export default {
@@ -59,4 +62,7 @@ export default {
   MaterialUseConfirm: useConfirm,
 
   MaterialProvider,
+  MaterialActionBlock,
+  MaterialIfCondition,
+  MaterialElseCondition,
 };
