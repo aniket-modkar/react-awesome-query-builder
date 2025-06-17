@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import TextField from "@mui/material/TextField";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import Box from "@mui/material/Box";
-import FormHelperText from "@mui/material/FormHelperText";
-// Assuming formulaUtils.js is within the core package and accessible like this.
+import TextField from "@material-ui/core/TextField";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import Box from "@material-ui/core/Box";
+import FormHelperText from "@material-ui/core/FormHelperText";
 // The exact import path might need adjustment based on the project's module resolution.
-import { validateFormula } from "@react-awesome-query-builder/core/modules/utils/formulaUtils.js";
+import { validateFormula } from "../../../../core/modules/utils/formulaUtils.js";
 
 const MaterialActionBlock = ({ action, setAction, readonly, targetFieldType, fields }) => {
   const [formulaError, setFormulaError] = useState(null);
@@ -139,7 +138,7 @@ const MaterialActionBlock = ({ action, setAction, readonly, targetFieldType, fie
   };
 
   return (
-    <Box sx={{ p: 1, mt: 1, border: "1px dashed gray", borderRadius: "4px" }}>
+    <Box p={1} mt={1} border="1px dashed gray" borderRadius="4px">
       <FormControl fullWidth margin="dense">
         <InputLabel id="action-type-label">Action Type</InputLabel>
         <Select

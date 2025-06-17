@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
 import MaterialActionBlock from "./MaterialActionBlock";
 import MaterialButton from "./MaterialButton";
 
@@ -29,23 +29,19 @@ const MaterialElseCondition = (props) => {
 
   return (
     <Box
-      sx={{
-        p: 2,
-        mb: 2,
-        border: "1px solid grey",
-        borderRadius: "4px",
-        backgroundColor: "background.paper",
-      }}
+      p={2}
+      mb={2}
+      border="1px solid grey"
+      borderRadius="4px"
+      bgcolor="background.paper"
     >
       <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          mb: 1,
-        }}
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        mb={1}
       >
-        <Typography variant="h6" component="div" sx={{ color: "text.secondary" }}>
+        <Typography variant="h6" component="div" color="textSecondary">
           ELSE
         </Typography>
         {!readonly && removeSelf && (
@@ -58,9 +54,11 @@ const MaterialElseCondition = (props) => {
         )}
       </Box>
 
-      <Typography variant="subtitle1" component="div" sx={{ mt: 2, mb: 1 }}>
-        Action:
-      </Typography>
+      <Box mt={2} mb={1}>
+        <Typography variant="subtitle1" component="div">
+          Action:
+        </Typography>
+      </Box>
       <MaterialActionBlock
         action={currentAction}
         setAction={setSelfAction}

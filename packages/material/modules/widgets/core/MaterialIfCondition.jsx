@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
 import MaterialActionBlock from "./MaterialActionBlock";
 import MaterialButton from "./MaterialButton"; // For potential add rule/group buttons
 import MaterialConjs from "./MaterialConjs"; // For AND/OR inside the condition
@@ -61,24 +61,20 @@ const MaterialIfCondition = (props) => {
 
   return (
     <Box
-      sx={{
-        p: 2,
-        mb: 2,
-        border: "1px solid",
-        borderColor: type === "IF" ? "primary.main" : "secondary.main",
-        borderRadius: "4px",
-        backgroundColor: "background.paper",
-      }}
+      p={2}
+      mb={2}
+      border="1px solid"
+      borderColor={type === "IF" ? "primary.main" : "secondary.main"}
+      borderRadius="4px"
+      bgcolor="background.paper"
     >
       <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          mb: 1,
-        }}
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        mb={1}
       >
-        <Typography variant="h6" component="div" sx={{ color: type === "IF" ? "primary.dark" : "secondary.dark" }}>
+        <Typography variant="h6" component="div" color={type === "IF" ? "primary" : "textSecondary"}>
           {type}
         </Typography>
         {!readonly && removeSelf && (
@@ -91,7 +87,7 @@ const MaterialIfCondition = (props) => {
         )}
       </Box>
 
-      <Box sx={{ pl: 2, borderLeft: "2px solid lightgrey", mb: 2 }}>
+      <Box pl={2} borderLeft="2px solid lightgrey" mb={2}>
         {/* Condition Conjunction (AND/OR for rules within this IF/ELSEIF) */}
         <MaterialConjs {...conjsProps(props)} />
 
@@ -100,7 +96,7 @@ const MaterialIfCondition = (props) => {
 
         {/* Add Rule/Group buttons for the condition */}
         {!readonly && (
-          <Box sx={{ mt: 1 }}>
+          <Box mt={1}>
             <MaterialButton
               label="Add Rule"
               onClick={addRule}
@@ -118,9 +114,11 @@ const MaterialIfCondition = (props) => {
         )}
       </Box>
 
-      <Typography variant="subtitle1" component="div" sx={{ mt: 2, mb: 1 }}>
-        Action:
-      </Typography>
+      <Box mt={2} mb={1}>
+        <Typography variant="subtitle1" component="div">
+          Action:
+        </Typography>
+      </Box>
       <MaterialActionBlock
         action={currentAction}
         setAction={setSelfAction}
